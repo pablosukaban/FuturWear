@@ -1,10 +1,11 @@
-import React from 'react';
-import { useAppSelector } from './store/hooks';
+import Home from './pages/Home';
 
 const App = () => {
-    const { color } = useAppSelector((state) => state.paramsSlice);
-
-    return <div className='text-4xl text-green-400'>{color}</div>;
+    return (
+        <main className='app transition-all ease-in'>
+            <Home />
+        </main>
+    );
 };
 
 export default App;

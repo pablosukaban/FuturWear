@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface ParamsState {
     intro: boolean;
@@ -21,5 +21,9 @@ const initialState: ParamsState = {
 export const paramsSlice = createSlice({
     name: 'paramsSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        changeIntro: (state, action: PayloadAction<boolean>) => {
+            state.intro = action.payload;
+        },
+    },
 });
