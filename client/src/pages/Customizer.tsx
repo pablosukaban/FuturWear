@@ -27,7 +27,13 @@ const Customizer = () => {
                         <div className='flex min-h-screen items-center'>
                             <div className='editortabs-container tabs'>
                                 {EditorTabs.map((item) => (
-                                    <Tab key={item.name} />
+                                    <Tab
+                                        key={item.name}
+                                        tab={item}
+                                        handleClick={() => console.log('yo')}
+                                        isActiveTab=''
+                                        isFilterTab={true}
+                                    />
                                 ))}
                             </div>
                         </div>
@@ -50,7 +56,15 @@ const Customizer = () => {
                         {...slideAnimation('up')}
                     >
                         {FilterTabs.map((item) => (
-                            <Tab key={item.name} />
+                            <Tab
+                                key={item.name}
+                                handleClick={() => {
+                                    console.log('yo');
+                                }}
+                                isFilterTab={true}
+                                tab={item}
+                                isActiveTab=''
+                            />
                         ))}
                     </motion.div>
                 </>

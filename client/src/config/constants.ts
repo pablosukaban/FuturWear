@@ -6,7 +6,12 @@ import ai from '../assets/ai.png';
 import logoShirt from '../assets/logo-tshirt.png';
 import stylishShirt from '../assets/stylish-tshirt.png';
 
-export const EditorTabs = [
+export type TabType = {
+    name: string;
+    icon: string;
+};
+
+export const EditorTabs: TabType[] = [
     {
         name: 'colorpicker',
         icon: swatch,
@@ -21,7 +26,7 @@ export const EditorTabs = [
     },
 ];
 
-export const FilterTabs = [
+export const FilterTabs: TabType[] = [
     {
         name: 'logoShirt',
         icon: logoShirt,
