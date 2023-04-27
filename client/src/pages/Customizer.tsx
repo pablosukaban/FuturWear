@@ -9,11 +9,47 @@ import { slideAnimation, fadeAnimation } from '../config/motion';
 import Tab from '../components/Tab';
 import CustomButton from '../components/CustomButton';
 import { paramsSlice } from '../store/paramsSlice';
+import ColorPicker from '../components/ColorPicker';
+import FilePicker from '../components/FilePicker';
+import AIPIcker from '../components/AIPIcker';
+
+type filterTabType = {
+    logoShirt: boolean;
+    stylishShirt: boolean;
+};
 
 const Customizer = () => {
     const { intro } = useAppSelector((state) => state.paramsSlice);
     const dispatch = useAppDispatch();
     const { changeIntro } = paramsSlice.actions;
+
+    const [file, setFile] = useState('');
+    const [prompt, setPrompt] = useState('');
+    const [generatingImage, setGeneratingImage] = useState(false);
+
+    const [activeEditorTab, setActiveEditorTab] = useState('');
+    const [activeFilterTab, setActiveFilterTab] = useState<filterTabType>({
+        logoShirt: true,
+        stylishShirt: false,
+    });
+
+    const generateTabContent = () => {
+        switch (activeEditorTab) {
+            case 'colorpicker':
+                return <ColorPicker />;
+            case 'filepicker':
+                return <FilePicker />;
+            case 'aipicker':
+                return <AIPIcker />;
+
+            default:
+                return null;
+        }
+    };
+
+    const handleEditorTabClick = (tabName: string) => {
+        setActiveEditorTab(tabName);
+    };
 
     return (
         <AnimatePresence>
@@ -30,11 +66,15 @@ const Customizer = () => {
                                     <Tab
                                         key={item.name}
                                         tab={item}
-                                        handleClick={() => console.log('yo')}
+                                        handleClick={() =>
+                                            handleEditorTabClick(item.name)
+                                        }
                                         isActiveTab=''
                                         isFilterTab={true}
                                     />
                                 ))}
+
+                                {generateTabContent()}
                             </div>
                         </div>
                     </motion.div>
