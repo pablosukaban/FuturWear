@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { ColorResult, SketchPicker } from 'react-color';
+import { SketchPicker } from 'react-color';
 import { paramsSlice } from '../store/paramsSlice';
 
 const ColorPicker = () => {

@@ -2,18 +2,32 @@ import { easing } from 'maath';
 import { useAppSelector } from '../store/hooks';
 import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
+import { GLTF } from 'three-stdlib';
+
+type GLTFResult = GLTF & {
+    nodes: {
+        T_Shirt_male: THREE.Mesh;
+    };
+    materials: {
+        lambert1: THREE.MeshStandardMaterial;
+    };
+};
 
 const Shirt = () => {
     const paramsState = useAppSelector((state) => state.paramsSlice);
-    const { nodes, materials } = useGLTF('/shirt_baked.glb');
+    const { nodes, materials } = useGLTF('/shirt_baked.glb') as GLTFResult;
 
-    const logoTexture = useTexture(paramsState.logoDecal);
-    const fullTexture = useTexture(paramsState.fullDecal);
+    const stringedLogoDecal = String(paramsState.logoDecal);
+    const stringedFullDecal = String(paramsState.fullDecal);
+    const stringedColor = String(paramsState.color);
+
+    const logoTexture = useTexture(stringedLogoDecal);
+    const fullTexture = useTexture(stringedFullDecal);
 
     const stateString = JSON.stringify(paramsState);
 
     useFrame((_state, delta) =>
-        easing.dampC(materials.lambert1.color, paramsState.color, 0.25, delta)
+        easing.dampC(materials.lambert1.color, stringedColor, 0.25, delta)
     );
 
     return (
@@ -50,3 +64,5 @@ const Shirt = () => {
 };
 
 export default Shirt;
+
+useGLTF.preload('/shirt_baked.glb');
