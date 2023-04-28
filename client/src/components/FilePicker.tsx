@@ -12,6 +12,13 @@ const FilePicker = ({ file, setFile, readFile }: FilePickerProps) => {
 
         if (!newFile) return;
 
+        const isImage = newFile.type.includes('image');
+
+        if (!isImage) {
+            alert('Фаил должен быть изображением');
+            return;
+        }
+
         setFile(newFile);
     };
 
