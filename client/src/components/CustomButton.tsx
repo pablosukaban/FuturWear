@@ -1,4 +1,5 @@
 import { useAppSelector } from '../store/hooks';
+import { getContrastingColor } from '../config/helpers';
 
 type CustomButtonProps = {
     type: string;
@@ -13,21 +14,34 @@ const CustomButton = ({
     title,
     type,
 }: CustomButtonProps) => {
-    const { color } = useAppSelector((state) => state.paramsSlice);
+    const state = useAppSelector((state) => state.paramsSlice);
 
-    const generateStyles = (type: string) => {
-        switch (type) {
-            case 'filled':
-                return { backgroundColor: color, text: '#fff' };
+    const contrastingColor = getContrastingColor(state.color as string);
 
-            default:
-                break;
-        }
-    };
+    const stringedColor = String(state.color);
+
+    // const generateStyles = (type: string) => {
+    //     if (type === 'filled') {
+    //         return { backgroundColor: color, text: '#fff' };
+    //     } else {
+    //         return { backgroundColor: '#fff', text: color };
+    //     }
+    // };
 
     return (
         <button
-            style={generateStyles(type)}
+            style={
+                type === 'filled'
+                    ? {
+                          backgroundColor: stringedColor,
+                          color: contrastingColor,
+                      }
+                    : {
+                          color: stringedColor,
+                          borderWidth: '1px',
+                          borderColor: stringedColor,
+                      }
+            }
             className={`flex-1 rounded-md px-2 py-1.5 ${customStyles}`}
             onClick={handleClick}
         >

@@ -12,7 +12,7 @@ export const downloadCanvasToImage = () => {
     document.body.removeChild(link);
 };
 
-export const reader = (file) =>
+export const reader = (file: Blob) =>
     new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.onload = () => resolve(fileReader.result);
@@ -33,4 +33,23 @@ export const getContrastingColor = (color: string) => {
 
     // Return black or white depending on the brightness
     return brightness > 128 ? 'black' : 'white';
+};
+
+export const getDecalType = (
+    type: string
+): {
+    stateProperty: string;
+    filterTab: string;
+} => {
+    if (type === 'logo') {
+        return {
+            stateProperty: 'logoDecal',
+            filterTab: 'logoShirt',
+        };
+    } else {
+        return {
+            stateProperty: 'fullDecal',
+            filterTab: 'stylishShirt',
+        };
+    }
 };

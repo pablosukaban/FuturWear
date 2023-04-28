@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import config from '../config/config';
-import DownloadImage from '../assets/download.png';
-import { downloadCanvasToImage, reader } from '../config/helpers';
-import { EditorTabs, FilterTabs, DecalTypes } from '../config/constants';
+// import DownloadImageIcon from '../assets/download.png';
+// import { downloadCanvasToImage, getDecalType } from '../config/helpers';
+import { EditorTabs, FilterTabs } from '../config/constants';
 import { slideAnimation, fadeAnimation } from '../config/motion';
 import Tab from '../components/Tab';
 import CustomButton from '../components/CustomButton';
@@ -13,25 +12,22 @@ import ColorPicker from '../components/ColorPicker';
 import FilePicker from '../components/FilePicker';
 import AIPIcker from '../components/AIPIcker';
 
-type filterTabType = {
-    logoShirt: boolean;
-    stylishShirt: boolean;
-};
+// type filterTabType = {
+//     logoShirt: boolean;
+//     stylishShirt: boolean;
+// };
 
 const Customizer = () => {
     const { intro } = useAppSelector((state) => state.paramsSlice);
     const dispatch = useAppDispatch();
-    const { changeIntro } = paramsSlice.actions;
+    const { changeIntro, changeActiveFilterTab } = paramsSlice.actions;
 
-    const [file, setFile] = useState('');
-    const [prompt, setPrompt] = useState('');
-    const [generatingImage, setGeneratingImage] = useState(false);
+    // const [file, setFile] = useState<Blob>();
+    // const [prompt, setPrompt] = useState('');
+    // const [generatingImage, setGeneratingImage] = useState(false);
 
-    const [activeEditorTab, setActiveEditorTab] = useState('');
-    const [activeFilterTab, setActiveFilterTab] = useState<filterTabType>({
-        logoShirt: true,
-        stylishShirt: false,
-    });
+    const [activeEditorTab, setActiveEditorTab] = useState<string>('');
+    const [activeFilterTab, setActiveFilterTab] = useState('logoShirt');
 
     const generateTabContent = () => {
         switch (activeEditorTab) {
@@ -51,6 +47,51 @@ const Customizer = () => {
         setActiveEditorTab(tabName);
     };
 
+    const handleFilterTabClick = (tabName: string) => {
+        // if (tabName.name === 'logoShirt') {
+        //     setActiveFilterTab({
+        //         logoShirt: true,
+        //         stylishShirt: false,
+        //     });
+        // } else {
+        //     setActiveFilterTab({
+        //         logoShirt: false,
+        //         stylishShirt: true,
+        //     });
+        // }
+        dispatch(changeActiveFilterTab(tabName));
+        setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
+    };
+
+    // const handleDecals = (type: string, result: string) => {
+    //     const { stateProperty, filterTab } = getDecalType(type);
+
+    //     dispatch(
+    //         changeDecal({
+    //             stateProperty,
+    //             result,
+    //         })
+    //     );
+
+    //     if(!activeFilterTab[filterTab]) {
+    //       handleActiveFilterTab(decalType.filterTab)
+    //     }
+    // };
+
+    // const readFile = (type: string) => {
+    //     new Promise((resolve, reject) => {
+    //         if (file === undefined) {
+    //             reject('No file selected');
+    //         } else {
+    //             const fileReader = new FileReader();
+    //             fileReader.onload = () => resolve(fileReader.result);
+    //             fileReader.readAsDataURL(file);
+    //         }
+    //     }).then((result) => {});
+    // };
+
+    // console.log(activeFilterTab);
+
     return (
         <AnimatePresence>
             {!intro && (
@@ -69,8 +110,10 @@ const Customizer = () => {
                                         handleClick={() =>
                                             handleEditorTabClick(item.name)
                                         }
-                                        isActiveTab=''
-                                        isFilterTab={true}
+                                        isActiveTab={
+                                            item.name === activeEditorTab
+                                        }
+                                        isFilterTab={false}
                                     />
                                 ))}
 
@@ -98,12 +141,12 @@ const Customizer = () => {
                         {FilterTabs.map((item) => (
                             <Tab
                                 key={item.name}
-                                handleClick={() => {
-                                    console.log('yo');
-                                }}
+                                handleClick={() =>
+                                    handleFilterTabClick(item.name)
+                                }
                                 isFilterTab={true}
                                 tab={item}
-                                isActiveTab=''
+                                isActiveTab={item.name === activeFilterTab}
                             />
                         ))}
                     </motion.div>

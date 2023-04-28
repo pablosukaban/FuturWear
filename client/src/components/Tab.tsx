@@ -4,17 +4,18 @@ import { useAppSelector } from '../store/hooks';
 type TabProps = {
     tab: TabType;
     isFilterTab: boolean;
-    isActiveTab: string;
+    isActiveTab: boolean;
     handleClick: () => void;
 };
 
 const Tab = ({ handleClick, isActiveTab, isFilterTab, tab }: TabProps) => {
     const { color } = useAppSelector((state) => state.paramsSlice);
 
-    const activeStyle =
-        isFilterTab && isActiveTab
-            ? { backgroundColor: color, opacity: 0.5 }
-            : { backgroundColor: 'transparent', opacity: 1 };
+    const stringedColor = String(color);
+
+    const activeStyle = isActiveTab
+        ? { backgroundColor: stringedColor, opacity: 0.5 }
+        : { backgroundColor: 'transparent', opacity: 1 };
 
     return (
         <div
