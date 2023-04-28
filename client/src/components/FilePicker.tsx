@@ -1,16 +1,26 @@
 import CustomButton from './CustomButton';
 
-const FilePicker = () => {
+type FilePickerProps = {
+    file: File | undefined;
+    setFile: (file: File) => void;
+    readFile: (type: string) => void;
+};
+
+const FilePicker = ({ file, setFile, readFile }: FilePickerProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e);
+        const newFile = e.target?.files?.item(0);
+
+        if (!newFile) return;
+
+        setFile(newFile);
     };
 
     const handleLogoButtonClick = () => {
-        console.log('click');
+        readFile('logo');
     };
 
     const handleFullTextureButtonClick = () => {
-        console.log('full click');
+        readFile('full');
     };
 
     return (
@@ -25,7 +35,9 @@ const FilePicker = () => {
                 <label htmlFor='file-upload' className='filepicker-label'>
                     Загрузить файл
                 </label>
-                <p className='mt-2 truncate text-xs text-gray-500'>Имя файла</p>
+                <p className='mt-2 truncate text-xs text-gray-500'>
+                    Имя файла: {file?.name}
+                </p>
             </div>
 
             <div className='mt-4 flex flex-wrap gap-3'>

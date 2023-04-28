@@ -20,21 +20,61 @@ import AIPIcker from '../components/AIPIcker';
 const Customizer = () => {
     const { intro } = useAppSelector((state) => state.paramsSlice);
     const dispatch = useAppDispatch();
-    const { changeIntro, changeActiveFilterTab } = paramsSlice.actions;
+    const {
+        changeIntro,
+        changeActiveFilterTab,
+        changelogoDecal,
+        changeFullDecal,
+    } = paramsSlice.actions;
 
-    // const [file, setFile] = useState<Blob>();
+    const [file, setFile] = useState<File>();
     // const [prompt, setPrompt] = useState('');
     // const [generatingImage, setGeneratingImage] = useState(false);
 
     const [activeEditorTab, setActiveEditorTab] = useState<string>('');
     const [activeFilterTab, setActiveFilterTab] = useState('logoShirt');
 
+    const handleEditorTabClick = (tabName: string) => {
+        setActiveEditorTab(tabName);
+    };
+
+    const handleFilterTabClick = (tabName: string) => {
+        dispatch(changeActiveFilterTab(tabName));
+        setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
+    };
+
+    const readFile = (type: string) => {
+        new Promise((resolve, reject) => {
+            if (file === undefined) {
+                reject('No file selected');
+            } else {
+                const fileReader = new FileReader();
+                fileReader.onload = () => resolve(fileReader.result);
+                fileReader.readAsDataURL(file);
+            }
+        }).then((result) => {
+            if (type === 'logo') {
+                dispatch(changelogoDecal(result as File));
+            } else if (type === 'full') {
+                dispatch(changeFullDecal(result as File));
+            }
+        });
+    };
+
+    // console.log(activeFilterTab);
+
     const generateTabContent = () => {
         switch (activeEditorTab) {
             case 'colorpicker':
                 return <ColorPicker />;
             case 'filepicker':
-                return <FilePicker />;
+                return (
+                    <FilePicker
+                        file={file}
+                        setFile={setFile}
+                        readFile={readFile}
+                    />
+                );
             case 'aipicker':
                 return <AIPIcker />;
 
@@ -42,55 +82,6 @@ const Customizer = () => {
                 return null;
         }
     };
-
-    const handleEditorTabClick = (tabName: string) => {
-        setActiveEditorTab(tabName);
-    };
-
-    const handleFilterTabClick = (tabName: string) => {
-        // if (tabName.name === 'logoShirt') {
-        //     setActiveFilterTab({
-        //         logoShirt: true,
-        //         stylishShirt: false,
-        //     });
-        // } else {
-        //     setActiveFilterTab({
-        //         logoShirt: false,
-        //         stylishShirt: true,
-        //     });
-        // }
-        dispatch(changeActiveFilterTab(tabName));
-        setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
-    };
-
-    // const handleDecals = (type: string, result: string) => {
-    //     const { stateProperty, filterTab } = getDecalType(type);
-
-    //     dispatch(
-    //         changeDecal({
-    //             stateProperty,
-    //             result,
-    //         })
-    //     );
-
-    //     if(!activeFilterTab[filterTab]) {
-    //       handleActiveFilterTab(decalType.filterTab)
-    //     }
-    // };
-
-    // const readFile = (type: string) => {
-    //     new Promise((resolve, reject) => {
-    //         if (file === undefined) {
-    //             reject('No file selected');
-    //         } else {
-    //             const fileReader = new FileReader();
-    //             fileReader.onload = () => resolve(fileReader.result);
-    //             fileReader.readAsDataURL(file);
-    //         }
-    //     }).then((result) => {});
-    // };
-
-    // console.log(activeFilterTab);
 
     return (
         <AnimatePresence>

@@ -6,8 +6,8 @@ export interface ParamsState {
     color: string | ColorResult;
     isLogoTexture: boolean;
     isFullTexture: boolean;
-    logoDecal: string | null;
-    fullDecal: string | null;
+    logoDecal: string | File | null;
+    fullDecal: string | File | null;
 }
 
 const initialState: ParamsState = {
@@ -15,8 +15,8 @@ const initialState: ParamsState = {
     color: '#EFBD48',
     isLogoTexture: true,
     isFullTexture: false,
-    logoDecal: './maxim.jpg',
-    fullDecal: './maxim.jpg',
+    logoDecal: './maxim2.jpg',
+    fullDecal: './maxim2.jpg',
 };
 
 export const paramsSlice = createSlice({
@@ -38,15 +38,13 @@ export const paramsSlice = createSlice({
                 state.isFullTexture = !state.isFullTexture;
             }
         },
-        changeDecal: (
-            state,
-            action: PayloadAction<{ stateProperty: string; result: string }>
-        ) => {
-            if (action.payload.stateProperty === 'logo') {
-                state.logoDecal = action.payload.result;
-            } else {
-                state.fullDecal = action.payload.result;
-            }
+        changelogoDecal: (state, action: PayloadAction<File>) => {
+            if (!action.payload) return;
+            state.logoDecal = action.payload;
+        },
+        changeFullDecal: (state, action: PayloadAction<File>) => {
+            if (!action.payload) return;
+            state.fullDecal = action.payload;
         },
     },
 });
