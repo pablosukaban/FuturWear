@@ -13,11 +13,11 @@ export interface ParamsState {
 
 const initialState: ParamsState = {
     intro: true,
-    color: '#EFBD48',
+    color: '#648A71',
     isLogoTexture: true,
     isFullTexture: false,
-    logoDecal: './maxim2.jpg',
-    fullDecal: './maxim2.jpg',
+    logoDecal: './field.jpg',
+    fullDecal: './field.jpg',
 };
 
 export const paramsSlice = createSlice({

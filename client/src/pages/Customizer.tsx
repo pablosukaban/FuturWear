@@ -92,7 +92,7 @@ const Customizer = () => {
             };
 
             const response = await fetch(
-                'http://localhost:8080/api/v1/dalle',
+                'https://ai-clothing.onrender.com/api/v1/dalle',
                 options
             );
 
