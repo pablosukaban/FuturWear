@@ -13,7 +13,7 @@ app.use(cors());
 app.use('/api/v1/dalle', dalleRouter);
 
 app.get('/', (req, res) => {
-    res.status(200).json({ message: process.env.OPEN_AI_KEY });
+    res.status(200).json({ message: 'Welcome to DALL-E' });
 });
 
 app.listen(8080, () => console.log('Server is running on port 8080'));
