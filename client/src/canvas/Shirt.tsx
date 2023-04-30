@@ -55,7 +55,7 @@ const Shirt = () => {
                         map={logoTexture}
                         map-anisotrophy={16}
                         depthTest={false}
-                        depthWrite={true}
+                        // depthWrite={true}
                     />
                 )}
             </mesh>
