@@ -48,9 +48,13 @@ const Customizer = () => {
     const handleDecals = (type: string, result: string | File) => {
         if (type === 'logo') {
             dispatch(changelogoDecal(result as File));
+            if (currentFilterTab === 'logoShirt') return;
+
             dispatch(changeActiveFilterTab('logoShirt'));
         } else if (type === 'full') {
             dispatch(changeFullDecal(result as File));
+            if (currentFilterTab === 'stylishShirt') return;
+
             dispatch(changeActiveFilterTab('stylishShirt'));
         }
     };
