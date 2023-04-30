@@ -28,8 +28,9 @@ const Customizer = () => {
     } = paramsSlice.actions;
 
     const [file, setFile] = useState<File>();
-    // const [prompt, setPrompt] = useState('');
-    // const [generatingImage, setGeneratingImage] = useState(false);
+
+    const [prompt, setPrompt] = useState('');
+    const [generatingImage, setGeneratingImage] = useState(false);
 
     const [activeEditorTab, setActiveEditorTab] = useState<string>('');
     const [activeFilterTab, setActiveFilterTab] = useState('logoShirt');
@@ -43,25 +44,67 @@ const Customizer = () => {
         setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
     };
 
+    const handleDecals = (type: string, result: string | File) => {
+        if (type === 'logo') {
+            dispatch(changelogoDecal(result as File));
+            // dispatch(changeActiveFilterTab('logoShirt'));
+            // setActiveFilterTab(
+            //     activeFilterTab === 'logoShirt' ? '' : 'logoShirt'
+            // );
+        } else if (type === 'full') {
+            dispatch(changeFullDecal(result as File));
+            // dispatch(changeActiveFilterTab('stylishShirt'));
+            // setActiveFilterTab(
+            //     activeFilterTab === 'stylishShirt' ? '' : 'stylishShirt'
+            // );
+        }
+    };
+
     const readFile = (type: string) => {
         new Promise((resolve, reject) => {
             if (file === undefined) {
-                reject('No file selected');
+                reject('Фаил не выбран');
             } else {
                 const fileReader = new FileReader();
                 fileReader.onload = () => resolve(fileReader.result);
                 fileReader.readAsDataURL(file);
             }
         }).then((result) => {
-            if (type === 'logo') {
-                dispatch(changelogoDecal(result as File));
-            } else if (type === 'full') {
-                dispatch(changeFullDecal(result as File));
-            }
+            handleDecals(type, result as File);
         });
     };
 
-    // console.log(activeFilterTab);
+    const handleSubmit = async (type: string) => {
+        if (!prompt) {
+            alert('Введите prompt');
+            return;
+        }
+
+        try {
+            setGeneratingImage(true);
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt }),
+            };
+
+            const response = await fetch(
+                'http://localhost:8080/api/v1/dalle',
+                options
+            );
+
+            const data = await response.json();
+
+            handleDecals(type, `data:image/png;base64,${data.photo}`);
+        } catch (error) {
+            alert(error);
+        } finally {
+            setGeneratingImage(false);
+        }
+    };
 
     const generateTabContent = () => {
         switch (activeEditorTab) {
@@ -76,7 +119,14 @@ const Customizer = () => {
                     />
                 );
             case 'aipicker':
-                return <AIPIcker />;
+                return (
+                    <AIPIcker
+                        generatingImage={generatingImage}
+                        prompt={prompt}
+                        setPrompt={setPrompt}
+                        handleSubmit={handleSubmit}
+                    />
+                );
 
             default:
                 return null;

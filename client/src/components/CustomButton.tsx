@@ -4,7 +4,8 @@ import { getContrastingColor } from '../config/helpers';
 type CustomButtonProps = {
     type: string;
     title: string;
-    handleClick: () => void;
+    disabled?: boolean;
+    handleClick?: () => void;
     customStyles: string;
 };
 
@@ -13,6 +14,7 @@ const CustomButton = ({
     handleClick,
     title,
     type,
+    disabled,
 }: CustomButtonProps) => {
     const state = useAppSelector((state) => state.paramsSlice);
 
@@ -30,6 +32,7 @@ const CustomButton = ({
 
     return (
         <button
+            disabled={disabled}
             style={
                 type === 'filled'
                     ? {
