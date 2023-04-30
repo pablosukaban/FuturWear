@@ -38,7 +38,7 @@ const Customizer = () => {
         setActiveEditorTab(tabName);
     };
 
-    const handleFilterTabClick = (tabName: string) => {
+    const handleFilterTabClick = (tabName: 'logoShirt' | 'stylishShirt') => {
         dispatch(changeActiveFilterTab(tabName));
         setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
     };

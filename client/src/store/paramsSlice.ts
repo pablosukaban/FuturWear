@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ColorResult } from 'react-color';
+import { FilterTabsNames } from '../config/constants';
 
 export interface ParamsState {
     intro: boolean;
@@ -29,7 +30,10 @@ export const paramsSlice = createSlice({
         changeColor: (state, action: PayloadAction<ColorResult | string>) => {
             state.color = action.payload;
         },
-        changeActiveFilterTab: (state, action: PayloadAction<string>) => {
+        changeActiveFilterTab: (
+            state,
+            action: PayloadAction<FilterTabsNames>
+        ) => {
             if (action.payload === 'logoShirt') {
                 state.isLogoTexture = !state.isLogoTexture;
                 state.isFullTexture = false;

@@ -1,8 +1,8 @@
-import { TabType } from '../config/constants';
+import { EditorTabType, FilterTabType } from '../config/constants';
 import { useAppSelector } from '../store/hooks';
 
 type TabProps = {
-    tab: TabType;
+    tab: FilterTabType | EditorTabType;
     isFilterTab: boolean;
     isActiveTab: boolean;
     handleClick: () => void;
