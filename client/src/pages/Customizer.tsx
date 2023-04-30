@@ -12,13 +12,10 @@ import ColorPicker from '../components/ColorPicker';
 import FilePicker from '../components/FilePicker';
 import AIPIcker from '../components/AIPIcker';
 
-// type filterTabType = {
-//     logoShirt: boolean;
-//     stylishShirt: boolean;
-// };
-
 const Customizer = () => {
-    const { intro } = useAppSelector((state) => state.paramsSlice);
+    const { intro, isLogoTexture } = useAppSelector(
+        (state) => state.paramsSlice
+    );
     const dispatch = useAppDispatch();
     const {
         changeIntro,
@@ -33,7 +30,8 @@ const Customizer = () => {
     const [generatingImage, setGeneratingImage] = useState(false);
 
     const [activeEditorTab, setActiveEditorTab] = useState('');
-    const [activeFilterTab, setActiveFilterTab] = useState('logoShirt');
+
+    const currentFilterTab = isLogoTexture ? 'logoShirt' : 'stylishShirt';
 
     const handleEditorTabClick = (tabName: string) => {
         setActiveEditorTab(tabName === activeEditorTab ? '' : tabName);
@@ -41,22 +39,16 @@ const Customizer = () => {
 
     const handleFilterTabClick = (tabName: 'logoShirt' | 'stylishShirt') => {
         dispatch(changeActiveFilterTab(tabName));
-        setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
+        // setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
     };
 
     const handleDecals = (type: string, result: string | File) => {
         if (type === 'logo') {
             dispatch(changelogoDecal(result as File));
-            // dispatch(changeActiveFilterTab('logoShirt'));
-            // setActiveFilterTab(
-            //     activeFilterTab === 'logoShirt' ? '' : 'logoShirt'
-            // );
+            dispatch(changeActiveFilterTab('logoShirt'));
         } else if (type === 'full') {
             dispatch(changeFullDecal(result as File));
-            // dispatch(changeActiveFilterTab('stylishShirt'));
-            // setActiveFilterTab(
-            //     activeFilterTab === 'stylishShirt' ? '' : 'stylishShirt'
-            // );
+            dispatch(changeActiveFilterTab('stylishShirt'));
         }
     };
 
@@ -187,7 +179,7 @@ const Customizer = () => {
                                 }
                                 isFilterTab={true}
                                 tab={item}
-                                isActiveTab={item.name === activeFilterTab}
+                                isActiveTab={currentFilterTab === item.name}
                             />
                         ))}
                     </motion.div>
