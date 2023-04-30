@@ -32,11 +32,11 @@ const Customizer = () => {
     const [prompt, setPrompt] = useState('');
     const [generatingImage, setGeneratingImage] = useState(false);
 
-    const [activeEditorTab, setActiveEditorTab] = useState<string>('');
+    const [activeEditorTab, setActiveEditorTab] = useState('');
     const [activeFilterTab, setActiveFilterTab] = useState('logoShirt');
 
     const handleEditorTabClick = (tabName: string) => {
-        setActiveEditorTab(tabName);
+        setActiveEditorTab(tabName === activeEditorTab ? '' : tabName);
     };
 
     const handleFilterTabClick = (tabName: 'logoShirt' | 'stylishShirt') => {
