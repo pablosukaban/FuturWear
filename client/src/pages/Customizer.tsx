@@ -13,7 +13,7 @@ import FilePicker from '../components/FilePicker';
 import AIPIcker from '../components/AIPIcker';
 
 const Customizer = () => {
-    const { intro, isLogoTexture } = useAppSelector(
+    const { intro, isLogoTexture, isFullTexture } = useAppSelector(
         (state) => state.paramsSlice
     );
     const dispatch = useAppDispatch();
@@ -31,7 +31,11 @@ const Customizer = () => {
 
     const [activeEditorTab, setActiveEditorTab] = useState('');
 
-    const currentFilterTab = isLogoTexture ? 'logoShirt' : 'stylishShirt';
+    const currentFilterTab = isLogoTexture
+        ? 'logoShirt'
+        : isFullTexture
+        ? 'stylishShirt'
+        : '';
 
     const handleEditorTabClick = (tabName: string) => {
         setActiveEditorTab(tabName === activeEditorTab ? '' : tabName);
@@ -39,7 +43,6 @@ const Customizer = () => {
 
     const handleFilterTabClick = (tabName: 'logoShirt' | 'stylishShirt') => {
         dispatch(changeActiveFilterTab(tabName));
-        // setActiveFilterTab(tabName === activeFilterTab ? '' : tabName);
     };
 
     const handleDecals = (type: string, result: string | File) => {

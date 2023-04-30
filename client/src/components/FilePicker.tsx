@@ -1,6 +1,4 @@
 import CustomButton from './CustomButton';
-import { useAppDispatch } from '../store/hooks';
-import { paramsSlice } from '../store/paramsSlice';
 
 type FilePickerProps = {
     file: File | undefined;
@@ -9,10 +7,6 @@ type FilePickerProps = {
 };
 
 const FilePicker = ({ file, setFile, readFile }: FilePickerProps) => {
-    const dispatch = useAppDispatch();
-
-    const { changeActiveFilterTab } = paramsSlice.actions;
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newFile = e.target?.files?.item(0);
 
@@ -30,12 +24,10 @@ const FilePicker = ({ file, setFile, readFile }: FilePickerProps) => {
 
     const handleLogoButtonClick = () => {
         readFile('logo');
-        dispatch(changeActiveFilterTab('logoShirt'));
     };
 
     const handleFullTextureButtonClick = () => {
         readFile('full');
-        dispatch(changeActiveFilterTab('stylishShirt'));
     };
 
     return (

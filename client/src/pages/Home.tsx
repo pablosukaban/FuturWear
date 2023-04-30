@@ -35,7 +35,7 @@ const Home = () => {
                     >
                         <motion.div {...headTextAnimation}>
                             <h1 className='head-text'>
-                                LET'S <br className='hidden xl:block' /> DO IT
+                                ЗА <br className='hidden xl:block' /> ДЕЛО
                             </h1>
                         </motion.div>
                     </motion.div>
@@ -53,7 +53,7 @@ const Home = () => {
                         </p>
                         <CustomButton
                             type='filled'
-                            title='Customize it'
+                            title='Создать'
                             handleClick={() => dispatch(changeIntro(false))}
                             customStyles='w-fit px-4 py-2.5 font-bold text-sm'
                         />
