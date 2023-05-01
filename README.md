@@ -1,4 +1,4 @@
-# 3. FuturWear
+# FuturWear
 
 ![FuturWear homepage](./client/src/assets/FuturWear.png)
 
